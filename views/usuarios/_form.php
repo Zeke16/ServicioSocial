@@ -26,16 +26,41 @@ Yii::$app->language = 'es_ES';
             <form role="form">
                 <div class="row border">
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
-                        <?= $form->field($model, 'nombres')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
+                        <?= $form->field($model, 'nombres')->textInput(
+                            [
+                                'maxlength' => true,
+                                'autofocus' => true,
+                                'disabled' => Yii::$app->user->can('MasterAccess') ? false : true
+                            ]
+                        )
+                        ?>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
-                        <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
+                        <?= $form->field($model, 'apellidos')->textInput(
+                            [
+                                'maxlength' => true,
+                                'autofocus' => true,
+                                'disabled' => Yii::$app->user->can('MasterAccess') ? false : true
+                            ]
+                        ) ?>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
-                        <?= $form->field($model, 'dni')->textInput(['maxlength' => true, 'autofocus' => true])->label('Documento Nacional de Identidad (DUI o Carnet de minoridad)') ?>
+                        <?= $form->field($model, 'dni')->textInput(
+                            [
+                                'maxlength' => true,
+                                'autofocus' => true,
+                                'disabled' => Yii::$app->user->can('MasterAccess') ? false : true
+                            ]
+                        )->label('Documento Nacional de Identidad (DUI o Carnet de minoridad)') ?>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
-                        <?= $form->field($model, 'lugar_residencia')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
+                        <?= $form->field($model, 'lugar_residencia')->textInput(
+                            [
+                                'maxlength' => true, 
+                                'autofocus' => true,
+                                'disabled' => Yii::$app->user->can('MasterAccess') ? false : true
+                            ]
+                        ) ?>
                     </div>
                     <div class="col-md-6">
                         <?= Html::activeLabel($model, 'id_departamento', ['class' => 'control-label']) ?>
@@ -43,7 +68,7 @@ Yii::$app->language = 'es_ES';
                             'data' => ArrayHelper::map(TblDepartamentos::find()->all(), 'id_departamento', 'nombre'),
                             'language' => 'es',
                             'options' => ['placeholder' => '-- Seleccionar departamento -- ',],
-                            'pluginOptions' => ['allowClear' => true]
+                            'pluginOptions' => ['allowClear' => true],
                         ]) ?>
                     </div>
                     <div class="col-md-6">
@@ -58,14 +83,16 @@ Yii::$app->language = 'es_ES';
                                 'url' => Url::to(['/usuarios/municipios']),
                                 'placeholder' => '- Seleccionar Municipio -',
                                 'loadingText' => 'Cargando datos...',
-                                'params' => ['model_id1'] ///SPECIFYING THE PARAM
+                                'params' => ['model_id1'], ///SPECIFYING THE PARAM
+                                
                             ]
                         ]); ?>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="display: <?= Yii::$app->user->can('MasterAccess') ? 'block' : 'none'?>;">
                         <?= Html::activeLabel($model, 'id_comision', ['class' => 'control-label']) ?>
                         <?= $form->field($model, 'id_comision', ['showLabels' => false])->widget(Select2::class, [
                             'name' => 'comision',
+                            
                             'data' => ArrayHelper::map(TblComisiones::find()->all(), 'id_comision', 'nombre_comision'),
                             'language' => 'es',
                             'id' => 'dep',
@@ -73,7 +100,7 @@ Yii::$app->language = 'es_ES';
                             'pluginOptions' => ['allowClear' => true]
                         ]) ?>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="display: <?= Yii::$app->user->can('MasterAccess') ? 'block' : 'none'?>;>
                         <?= Html::activeLabel($model, 'id_tipo_usuario', ['class' => 'control-label']) ?>
                         <?= $form->field($model, 'id_tipo_usuario', ['showLabels' => false])->widget(Select2::class, [
                             'name' => 'comision',

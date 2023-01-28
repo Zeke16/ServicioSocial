@@ -32,7 +32,7 @@ Yii::$app->language = 'es_ES';
                         <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
-                        <?= $form->field($model, 'dni')->textInput(['maxlength' => true, 'autofocus' => true])->label('Documento Nacional de Identidad (DUI o Carnet de minoridad)') ?>
+                        <?= $form->field($model, 'dni')->textInput(['maxlength' => true, 'autofocus' => true])?>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
                         <?= $form->field($model, 'lugar_residencia')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
@@ -53,7 +53,7 @@ Yii::$app->language = 'es_ES';
                             'language' => 'es',
                             'type' => DepDrop::TYPE_SELECT2,
                             'pluginOptions' => [
-                                'depends' => ['usersignup-id_departamento'],
+                                'depends' => ['usersignupadmin-id_departamento'],
                                 'initialize' => false,
                                 'url' => Url::to(['/usuarios/municipios']),
                                 'placeholder' => '- Seleccionar Municipio -',

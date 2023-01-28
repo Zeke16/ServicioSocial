@@ -2,9 +2,6 @@
 Yii::$app->language = 'es_ES';
 
 use app\models\TblComisiones;
-use app\models\TblDepartamentos;
-use app\models\TblMunicipios;
-use app\models\TblUsuarios;
 use kartik\export\ExportMenu;
 use yii\helpers\Html;
 use kartik\grid\GridView;
@@ -15,7 +12,7 @@ use yii\helpers\Url;
 /* @var $searchModel backend\models\OsigSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Listado de comisiones';
+$this->title = 'Listado de instituciones de gobierno';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -74,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ]);
 
             echo GridView::widget([
-                'id' => 'kv-grid-demo',
+                'id' => 'kv-instituciones',
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => $gridColumns,
@@ -112,7 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'showPageSummary'=>$pageSummary,
                 'panel' => [
                     'type' => GridView::TYPE_PRIMARY,
-                    'heading'=> 'Comisiones',
+                    'heading'=> 'Instituciones',
                 ],
                 'persistResize' => false,
             ]);

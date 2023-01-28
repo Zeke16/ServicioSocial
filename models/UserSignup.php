@@ -4,6 +4,7 @@ namespace app\models;
 
 use yii\base\Model;
 use app\models\User;
+use Yii;
 
 /**
  * Signup form
@@ -25,6 +26,7 @@ class UserSignup extends Model
     public $imagen;
     public $password;
     public $authKey;
+    public $reCaptcha;
 
     public static function tableName()
     {
@@ -41,10 +43,9 @@ class UserSignup extends Model
             [['username', 'nombres', 'apellidos', 'dni', 'id_departamento', 'id_municipio', 'lugar_residencia', 'email', 'password', 'telefono'], 'required'],
             [['id_departamento', 'id_municipio', 'id_tipo_usuario', 'id_comision', 'status'], 'integer'],
 
-            ['username', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Nombre de usuario ya existe.'],
             ['dni', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Documento de identidad ya registrado.'],
             ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Direccion de correo ya existe.'],
-            
+
             [['lugar_residencia', 'password'], 'string'],
             [['username', 'nombres', 'apellidos', 'email'], 'string', 'max' => 255],
             [['dni'], 'string', 'max' => 10],
@@ -53,6 +54,8 @@ class UserSignup extends Model
             [['imagen'], 'safe'],
             [['imagen'], 'file', 'extensions' => 'jpg, gif, png'],
             ['imagen', 'string', 'min' => 2, 'max' => 255],
+
+            ['reCaptcha', \himiklab\yii2\recaptcha\ReCaptchaValidator::class, 'secret' => '6LcoCxQkAAAAAABOzyCmw_TtpgZVeLcWPz_yw2d2']
         ];
     }
 
@@ -63,20 +66,21 @@ class UserSignup extends Model
             'username' => 'Username',
             'nombres' => 'Nombres',
             'apellidos' => 'Apellidos',
-            'dni' => 'Dni',
+            'dni' => 'Documento Nacional de Identidad (DUI o Pasaporte)',
             'id_departamento' => 'Departamento',
             'id_municipio' => 'Municipio',
             'lugar_residencia' => 'Lugar de residencia',
             'email' => 'Correo electrónico',
             'password' => 'Contraseña',
             'telefono' => 'Telefono',
-            'id_tipo_usuario' => 'Id Tipo Usuario',
-            'id_comision' => 'Id Comision',
+            'id_tipo_usuario' => 'Tipo de usuario',
+            'id_comision' => 'Institución',
             'auth_key' => 'Auth Key',
-            'password_hash' => 'Password Hash',
+            'password_hash' => 'Contraseña',
             'password_reset_token' => 'Password Reset Token',
             'imagen' => 'Imagen',
             'status' => 'Estado',
+            'reCaptcha' => 'reCaptcha'
         ];
     }
     /**
@@ -106,7 +110,12 @@ class UserSignup extends Model
         $user->status = $this->status;
         $user->setPassword($this->password);
         $user->generateAuthKey();
-
+        
         return $user->save() ? $user : null;
+    }
+
+    public static function obtenerUltimousuario(){
+        $usuario = TblUsuarios::find()->orderBy(['id_usuario' => SORT_DESC])->one();
+        return $usuario;
     }
 }

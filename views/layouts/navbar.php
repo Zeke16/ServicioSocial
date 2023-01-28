@@ -8,13 +8,15 @@ use yii\helpers\Html;
         background-color: #c5ccd6;
         border-bottom: #000 1px solid;
     }
-    .main-header h3, .main-header ul li, .main-header ul li a{
+
+    .main-header h3,
+    .main-header ul li,
+    .main-header ul li a {
         color: #000;
     }
-    
 </style>
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand ">
+<nav class="main-header navbar navbar-expand">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
@@ -42,8 +44,8 @@ use yii\helpers\Html;
                 </li>
                 <!-- Menu Footer-->
                 <li class="user-footer">
-                    <?= Html::a('Ver Perfil', ['/usuarios/view', 'id_usuario' => Yii::$app->user->identity->id], ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']) ?>
-                    <?= Html::a('Cerrar Sesión', ['/site/logout'], ['data-method' => 'post', 'class' => 'btn btn-default btn-flat float-right']) ?>
+                    <?= Html::a('Ver Perfil', ['/usuarios/view', 'id_usuario' => Yii::$app->user->identity->id], ['data-method' => 'post', 'class' => 'btn btn-flat rounded rounded border border-dark']) ?>
+                    <?= Html::a('Cerrar Sesión', ['/site/logout'], ['data-method' => 'post', 'class' => 'btn btn-flat rounded border border-dark float-right']) ?>
                 </li>
             </ul>
         </li>
@@ -54,4 +56,3 @@ use yii\helpers\Html;
 
 
 </nav>
-<!-- /.navbar -->

@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\TblComisiones;
 use app\models\TblComisionesSearch;
+use Exception;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,17 +71,24 @@ class TblComisionesController extends Controller
     {
         $model = new TblComisiones();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id_comision' => $model->id_comision]);
+        if ($model->load($this->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if (!$model->save()) {
+                    throw new Exception(implode("<br />", \yii\helpers\ArrayHelper::getColumn($model->getErrors(), 0, false)));
+                }
+                $transaction->commit();
+            } catch (Exception $e) {
+                $transaction->rollBack();
+                return $this->redirect(['index']);
             }
+            Yii::$app->session->setFlash('success', "Registro creado exitosamente.");
+            return $this->redirect(['view', 'id_comision' => $model->id_comision]);
         } else {
-            $model->loadDefaultValues();
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -94,6 +103,7 @@ class TblComisionesController extends Controller
         $model = $this->findModel($id_comision);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('info', "Registro actualizado exitosamente.");
             return $this->redirect(['view', 'id_comision' => $model->id_comision]);
         }
 
@@ -112,7 +122,7 @@ class TblComisionesController extends Controller
     public function actionDelete($id_comision)
     {
         $this->findModel($id_comision)->delete();
-
+        Yii::$app->session->setFlash('danger', "Registro eliminado exitosamente.");
         return $this->redirect(['index']);
     }
 

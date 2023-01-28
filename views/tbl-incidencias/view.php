@@ -1,7 +1,5 @@
 <?php
-
 use yii\helpers\Html;
-
 $this->title = 'Detalle';
 $this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -48,3 +46,10 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<?=
+$this->render("_grid_estado_incidencia", [
+    'model2' => $model2,
+    'ubicacion' => $model->ubicacion_incidencia,
+    'imagen' => $model->imagen_incidencia
+])
+?>

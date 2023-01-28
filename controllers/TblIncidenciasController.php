@@ -2,12 +2,16 @@
 
 namespace app\controllers;
 
+use app\models\TblEstadoIncidencia;
+use app\models\TblEstadoIncidenciaSearch;
 use app\models\TblIncidencias;
 use app\models\TblIncidenciasSearch;
+use Exception;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * TblIncidenciasController implements the CRUD actions for TblIncidencias model.
@@ -59,6 +63,7 @@ class TblIncidenciasController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id_incidencia),
+            'model2' => $this->findEstado($id_incidencia)
         ]);
     }
 
@@ -72,19 +77,46 @@ class TblIncidenciasController extends Controller
         $model = new TblIncidencias();
 
         if ($model->load($this->request->post())) {
-            if (
-                Yii::$app->user->can('UsuarioEstandarAccess') || Yii::$app->user->can('UsuarioConsultorAccess')
-                || Yii::$app->user->can('UsuarioSupervisorAccess')
-            ) {
-                $model->id_usuario = Yii::$app->user->identity->id_usuario;
-            }
-            $model->fecha_registro = date('Y-m-d H:i:s');
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if (
+                    Yii::$app->user->can('UsuarioEstandarAccess') || Yii::$app->user->can('UsuarioConsultorAccess')
+                    || Yii::$app->user->can('UsuarioSupervisorAccess')
+                ) {
+                    $model->id_usuario = Yii::$app->user->identity->id_usuario;
+                }
 
-            if (!$model->save()) {
-                print_r($model->getErrors());
-                die();
+                $image = UploadedFile::getInstance($model, 'imagen_incidencia');
+                $tmp = explode(".", $image->name);
+                $ext = end($tmp);
+                $name = Yii::$app->security->generateRandomString() . ".{$ext}";
+                $path = Yii::$app->basePath . '/web/avatars/' . $name;
+                $path2 = Yii::$app->request->baseUrl . '/avatars/' . $name;
+                $model->imagen_incidencia = $path2;
+                $image->saveAs($path);
+
+                $model->fecha_registro = date('Y-m-d H:i:s');
+
+                if (!$model->save()) {
+                    throw new Exception(implode("<br />", \yii\helpers\ArrayHelper::getColumn($model->getErrors(), 0, false)));
+                }
+
+                $model2 = new TblEstadoIncidencia();
+                $model2->estado = 0;
+                $model2->retroalimentacion = "Incidencia en proceso de resolución";
+                $model2->id_incidencia = $model->id_incidencia;
+
+                if (!$model2->save()) {
+                    throw new Exception(implode("<br />", \yii\helpers\ArrayHelper::getColumn($model2->getErrors(), 0, false)));
+                }
+
+                $transaction->commit();
+            } catch (Exception $e) {
+                $transaction->rollBack();
+                return $this->redirect(['index']);
             }
 
+            Yii::$app->session->setFlash('success', "Registro creado exitosamente.");
             return $this->redirect(['view', 'id_incidencia' => $model->id_incidencia]);
         } else {
             return $this->render('create', [
@@ -103,20 +135,41 @@ class TblIncidenciasController extends Controller
     public function actionUpdate($id_incidencia)
     {
         $model = $this->findModel($id_incidencia);
+        $imagenAntigua = $model->imagen_incidencia;
 
         if ($model->load($this->request->post())) {
-            if (
-                Yii::$app->user->can('UsuarioEstandarAccess') || Yii::$app->user->can('UsuarioConsultorAccess')
-                || Yii::$app->user->can('UsuarioSupervisorAccess')
-            ) {
-                $model->id_usuario = Yii::$app->user->identity->id_usuario;
-            }
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if (
+                    Yii::$app->user->can('UsuarioEstandarAccess') || Yii::$app->user->can('UsuarioConsultorAccess')
+                    || Yii::$app->user->can('UsuarioSupervisorAccess')
+                ) {
+                    $model->id_usuario = Yii::$app->user->identity->id_usuario;
+                }
+                $image = UploadedFile::getInstance($model, 'imagen_incidencia');
 
-            if (!$model->save()) {
-                print_r($model->getErrors());
-                die();
-            }
+                if (empty($image)) {
+                    $model->imagen_incidencia = $imagenAntigua;
+                } else {
+                    $tmp = explode(".", $image->name);
+                    $ext = end($tmp);
+                    $name = Yii::$app->security->generateRandomString() . ".{$ext}";
+                    $path = Yii::$app->basePath . '/web/avatars/' . $name;
+                    $path2 = Yii::$app->request->baseUrl . '/avatars/' . $name;;
+                    $model->imagen_incidencia = $path2;
+                    $image->saveAs($path);
+                }
 
+                if (!$model->save()) {
+                    throw new Exception(implode("<br />", \yii\helpers\ArrayHelper::getColumn($model->getErrors(), 0, false)));
+                }
+                
+                $transaction->commit();
+            } catch (Exception $e) {
+                $transaction->rollBack();
+                return $this->redirect(['index']);
+            }
+            Yii::$app->session->setFlash('success', "Registro creado exitosamente.");
             return $this->redirect(['view', 'id_incidencia' => $model->id_incidencia]);
         } else {
             return $this->render('create', [
@@ -134,8 +187,16 @@ class TblIncidenciasController extends Controller
      */
     public function actionDelete($id_incidencia)
     {
-        $this->findModel($id_incidencia)->delete();
-
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            TblEstadoIncidencia::deleteAll(['id_incidencia' => $id_incidencia]);
+            $this->findModel($id_incidencia)->delete();
+            $transaction->commit();
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            return $this->redirect(['index']);
+        }
+        Yii::$app->session->setFlash('success', "Registro eliminado exitosamente.");
         return $this->redirect(['index']);
     }
 
@@ -150,6 +211,15 @@ class TblIncidenciasController extends Controller
     {
         if (($model = TblIncidencias::findOne(['id_incidencia' => $id_incidencia])) !== null) {
             return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function findEstado($id_incidencia)
+    {
+        if (($model2 = TblEstadoIncidencia::findOne(['id_incidencia' => $id_incidencia])) !== null) {
+            return $model2;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');

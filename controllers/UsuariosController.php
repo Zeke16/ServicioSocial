@@ -2,12 +2,15 @@
 
 namespace app\controllers;
 
+use app\models\AuthAssignment;
 use app\models\TblMunicipios;
 use Yii;
 use app\models\TblUsuarios;
 use app\models\TblUsuariosSearch;
 use app\models\UserSignup;
+use app\models\UserSignupAdmin;
 use app\models\UsuariosSearch;
+use Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -68,13 +71,10 @@ class UsuariosController extends Controller
 
     public function actionSignup()
     {
-        $model = new UserSignup();
+        $model = new UserSignupAdmin();
 
         if ($model->load(Yii::$app->request->post())) {
             $model->username = $model->nombres . $model->apellidos;
-            $model->created_at = strtotime("now");
-            $model->updated_at = strtotime("now");
-
             $image = UploadedFile::getInstance($model, 'imagen');
             if (empty($image)) {
                 $name = $this->request->baseUrl . '/avatars/default.png';
@@ -89,6 +89,7 @@ class UsuariosController extends Controller
                 $image->saveAs($path);
             }
             if ($model->signup()) { {
+                    $this->asignarRol();
                     return $this->redirect(['index']);
                 }
             }
@@ -109,9 +110,8 @@ class UsuariosController extends Controller
             $model->username = $model->nombres . $model->apellidos;
             $model->id_comision = 8;
             $model->id_tipo_usuario = 1;
-            $model->created_at = strtotime("now");
-            $model->updated_at = strtotime("now");
-            
+
+
             $image = UploadedFile::getInstance($model, 'imagen');
             if (empty($image)) {
                 $name = $this->request->baseUrl . '/avatars/default.png';
@@ -125,9 +125,9 @@ class UsuariosController extends Controller
                 $model->imagen = $path2;
                 $image->saveAs($path);
             }
-            if ($model->signup()) { {
-                    return $this->redirect(['site/login']);
-                }
+            if ($model->signup()) {
+                $this->asignarRol();
+                return $this->redirect(['site/login']);
             }
         }
 
@@ -135,6 +135,7 @@ class UsuariosController extends Controller
             'model' => $model,
         ]);
     }
+
 
     /**
      * Updates an existing User model.
@@ -151,9 +152,11 @@ class UsuariosController extends Controller
             ->one();
 
         //TODO: Remover required password hash de TblUsuario
-        $model->password_hash = '';    
+        $model->password_hash = '';
         $j = $model2->password_hash;
         $imagenAntigua = $model->imagen;
+        $comisionVieja = $model->id_comision;
+        $tipoUsuarioViejo = $model->id_tipo_usuario;
 
         if ($model->load(Yii::$app->request->post())) {
 
@@ -170,6 +173,16 @@ class UsuariosController extends Controller
                 $path2 = Yii::$app->request->baseUrl . '/avatars/' . $name;;
                 $model->imagen = $path2;
                 $image->saveAs($path);
+            }
+
+            $id_comision = $_POST['TblUsuarios']['id_comision'];
+            if (empty($id_tipo)) {
+                $model->id_comision = $comisionVieja;
+            }
+
+            $id_tipo = $_POST['TblUsuarios']['id_tipo_usuario'];
+            if (empty($id_tipo)) {
+                $model->id_comision = $tipoUsuarioViejo;
             }
 
             $i = $_POST['TblUsuarios']['password_hash'];
@@ -217,7 +230,7 @@ class UsuariosController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-    
+
 
     public function actionLists($id)
     {
@@ -230,6 +243,32 @@ class UsuariosController extends Controller
             foreach ($municipios as $municipio) {
                 echo "<option value='" . $municipio->id_municipio . "'>" . $municipio->nombre . "</option>";
             }
+        }
+    }
+
+    function asignarRol()
+    {
+        $usuario = UserSignup::obtenerUltimousuario();
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $auth = Yii::$app->authManager;
+            if ($usuario->id_tipo_usuario == 1) {
+                $authorRole = $auth->getRole('UsuarioEstandarRol');
+            }else if($usuario->id_tipo_usuario == 2){
+                $authorRole = $auth->getRole('UsuarioConsultorRol');
+            }else if($usuario->id_tipo_usuario == 3){
+                $authorRole = $auth->getRole('UsuarioSupervisorRol');
+            }else if($usuario->id_tipo_usuario == 4){
+                $authorRole = $auth->getRole('MasterRol');
+            }
+
+            $auth->assign($authorRole, $usuario->id_usuario);
+
+            $transaction->commit();
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            print_r($e->getMessage());
+            return $this->redirect(['site/login']);
         }
     }
 

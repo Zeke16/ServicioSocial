@@ -24,7 +24,8 @@
         "kartik-v/yii2-export": "dev-master",
         "kartik-v/yii2-widgets": "@dev",
         "kartik-v/yii2-password": "dev-master",
-        "yii2mod/yii2-rbac": "*"
+        "yii2mod/yii2-rbac": "*",
+        "himiklab/yii2-recaptcha-widget": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

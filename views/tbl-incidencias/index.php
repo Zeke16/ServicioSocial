@@ -3,6 +3,7 @@ Yii::$app->language = 'es_ES';
 
 use app\models\TblComisiones;
 use app\models\TblDepartamentos;
+use app\models\TblEstadoIncidencia;
 use app\models\TblIncidencias;
 use app\models\TblMunicipios;
 use app\models\TblTipoIncidencias;
@@ -31,29 +32,28 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php
             $gridColumns = [
                 [
+                    'class' => 'kartik\grid\ExpandRowColumn',
+                    'width' => '50px',
+                    'value' => function ($model, $key, $index, $column) {
+                        return GridView::ROW_COLLAPSED;
+                    },
+                    'detail' => function ($model) {
+                        $paciente = TblIncidencias::getIncidencia($model->id_incidencia);
+                        $model2 = TblEstadoIncidencia::getEstadoIncidencia($model->id_incidencia);
+                        return Yii::$app->controller->renderPartial('_detalles', [
+                            'model' => $paciente,
+                            'model2' => $model2
+                        ]);
+                    },
+                    'headerOptions' => ['class' => 'kartik-sheet-style'],
+                    'expandOneOnly' => true
+                ],
+                [
                     'class' => 'kartik\grid\SerialColumn',
                     'contentOptions' => ['class' => 'kartik-sheet-style'],
                     'width' => '5%',
                     'header' => '#',
                     'headerOptions' => ['class' => 'kartik-sheet-style']
-                ],
-                [
-                    'class' => 'kartik\grid\DataColumn',
-                    'attribute' => 'id_usuario',
-                    'width' => '15%',
-                    'vAlign' => 'middle',
-                    'format' => 'raw',
-                    'value' => function ($model, $key, $index, $widget) {
-                        return Html::a($model->usuario->nombres,  ['usuarios/view', 'id_usuario' => $model->id_usuario]);
-                    },
-                    'filterType' => GridView::FILTER_SELECT2,
-                    'filter' => ArrayHelper::map(TblUsuarios::find()->orderBy('nombres')->all(), 'id_usuario', 'nombres'),
-                    'filterWidgetOptions' => [
-                        'options' => ['placeholder' => 'Todos...'],
-                        'pluginOptions' => [
-                            'allowClear' => true
-                        ],
-                    ],
                 ],
                 [
                     'class' => 'kartik\grid\DataColumn',
@@ -116,12 +116,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     'vAlign' => 'middle',
                     'format' => 'raw',
                     'value' => function ($model, $key, $index, $widget) {
-                        if($model->tipoIncidencia->nombre_incidencia == "Otro"){
+                        if ($model->tipoIncidencia->nombre_incidencia == "Otro") {
                             return $model->incidencia_otro;
-                        }else{
+                        } else {
                             return $model->tipoIncidencia->nombre_incidencia;
                         }
-                        
                     },
                     'filterType' => GridView::FILTER_SELECT2,
                     'filter' => ArrayHelper::map(TblTipoIncidencias::find()->orderBy('nombre_incidencia')->all(), 'id_tipo_incidencia', 'nombre_incidencia'),
@@ -139,7 +138,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'vAlign' => 'middle',
                     'format' => 'raw',
                     'value' => function ($model, $key, $index, $widget) {
-                        return date("Y-m-d", strtotime($model->fecha_registro));
+                        return date("Y-m-d H:i:s", strtotime($model->fecha_registro));
                     },
                     'filterType' => GridView::FILTER_SELECT2,
                     'filter' => ArrayHelper::map(TblIncidencias::find()->orderBy('fecha_registro')->all(), 'id_incidencia', 'fecha_registro'),
@@ -184,32 +183,32 @@ $this->params['breadcrumbs'][] = $this->title;
                     $exportmenu,
                     [
                         'content' =>
-                            Html::a('<i class="fas fa-plus"></i> Agregar', ['create'], [
-                                'class' => 'btn btn-success',
-                                'data-pjax' => 0,
-                            ]) . ' '.
+                        Html::a('<i class="fas fa-plus"></i> Agregar', ['create'], [
+                            'class' => 'btn btn-success',
+                            'data-pjax' => 0,
+                        ]) . ' ' .
                             Html::a('<i class="fas fa-redo"></i>', ['index'], [
                                 'class' => 'btn btn-outline-success',
-                                'title'=>Yii::t('kvgrid', 'Limpiar filtros'),
-                                'data-pjax' => 0, 
-                            ]), 
+                                'title' => Yii::t('kvgrid', 'Limpiar filtros'),
+                                'data-pjax' => 0,
+                            ]),
                         'options' => ['class' => 'btn-group mr-2']
                     ],
                     '{toggleData}',
-                    
+
                 ],
                 'toggleDataContainer' => ['class' => 'btn-group mr-2'],
                 // set export properties
                 // parameters from the demo form
-                'bordered'=> true,
-                'striped'=> true,
-                'condensed'=> true,
-                'responsive'=> true,
-                'hover'=> true,
+                'bordered' => true,
+                'striped' => true,
+                'condensed' => true,
+                'responsive' => true,
+                'hover' => true,
                 //'showPageSummary'=>$pageSummary,
                 'panel' => [
                     'type' => GridView::TYPE_PRIMARY,
-                    'heading'=> 'Tipos de incidencias',
+                    'heading' => 'Tipos de incidencias',
                 ],
                 'persistResize' => false,
             ]);

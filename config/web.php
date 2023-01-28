@@ -13,6 +13,11 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'reCaptcha' => [
+            'class' => 'himiklab\yii2\recaptcha\ReCaptchaConfig',
+            'siteKey' => '6LcoCxQkAAAAABs_L10DnB4t3mU8hkC8oqiYwZ-X',
+            'secret' => '6LcoCxQkAAAAAABOzyCmw_TtpgZVeLcWPz_yw2d2',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'DLE6_zrzWctvWDJ5-sAhaUz4iD6q2yEE',
@@ -92,6 +97,7 @@ $config = [
             'usuarios/create-user',
             'usuarios/municipios',
             'usuarios/lists',
+            'usuarios/asignarRol'
             //'admin/*',
             //'rbac/*',
             //'usuarios/*',

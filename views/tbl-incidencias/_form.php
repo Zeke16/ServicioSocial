@@ -7,6 +7,7 @@ use backend\models\TblSucursales;
 use kartik\daterange\DateRangePicker;
 use kartik\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
+use kartik\widgets\FileInput;
 use kartik\widgets\Select2;
 use kartik\widgets\SwitchInput;
 use yii\helpers\ArrayHelper;
@@ -21,12 +22,19 @@ use yii\helpers\Html;
 <div class="row">
     <div class="col-sm-12 col-md-12 col-xl-12">
         <div class="card card-primary">
-            
+
             <div class="card-header">
                 <h3 class="card-title">Crear / Editar registro</h3>
             </div>
 
-            <?php $form = ActiveForm::begin(['type' => ActiveForm::TYPE_HORIZONTAL]); ?>
+            <?php $form = ActiveForm::begin(
+                [
+                    'type' => ActiveForm::TYPE_HORIZONTAL,
+                    'options' => [
+                        'enctype' => 'multipart/form-data'
+                    ]
+                ]
+            ); ?>
             <div class="card-body">
                 <form role="form">
                     <div class="row">
@@ -71,6 +79,21 @@ use yii\helpers\Html;
                             <?= Html::activeLabel($model, 'lugar_incidencia', ['class' => 'control-label']) ?>
                             <?= $form->field($model, 'lugar_incidencia', ['showLabels' => false])->textarea([]) ?>
                         </div>
+                        <div class="col-md-12">
+                            <?= Html::activeLabel($model, 'imagen_incidencia', ['class' => 'control-label']) ?>
+                            <?= $form->field($model, 'imagen_incidencia', ['showLabels' => false])->widget(FileInput::class, [
+                                'options' => ['accept' => 'image/*'],
+                                'pluginOptions' => ['allowedFileExtensions' => ['jpg', 'gif', 'png'],],
+                            ]); ?>
+                        </div>
+                        <div class="col-md-12">
+                            <?= Html::activeLabel($model, 'ubicacion_incidencia', ['class' => 'control-label']) ?>
+                            <div id="map" style="width: 100%; height: 500px;"></div>
+                            <?= $form->field($model, 'ubicacion_incidencia', ['showLabels' => false])->textInput([
+                                'id' => 'ubicacion_incidencia',
+                                'hidden' => true
+                            ]) ?>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-save"></i> Guardar' : '<i class="fa fa-save"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
@@ -82,3 +105,55 @@ use yii\helpers\Html;
         </div>
     </div>
 </div>
+<script>
+    let markers = [];
+    let count = 0;
+
+    function initMap() {
+        let options = {
+            zoom: 12,
+            center: {
+                lat: 13.5024217,
+                lng: -88.1779086
+            }
+        }
+        const map = new google.maps.Map(document.getElementById("map"), options);
+        map.addListener("click", (e) => {
+            deleteMarkers()
+            placeMarkerAndPanTo(e.latLng, map);
+        });
+
+
+        function setMapOnAll(map) {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+        }
+
+        function hideMarkers() {
+            setMapOnAll(null);
+        }
+
+        function deleteMarkers() {
+            hideMarkers();
+            markers = [];
+        }
+    }
+
+
+    function placeMarkerAndPanTo(latLng, map) {
+        const marker = new google.maps.Marker({
+            position: latLng,
+            map: map,
+        });
+        map.panTo(latLng);
+
+        let data = JSON.stringify(latLng.toJSON())
+        let coordenadas = JSON.parse(data)
+        document.getElementById('ubicacion_incidencia').value = coordenadas.lat + ", " + coordenadas.lng
+
+        markers.push(marker);
+    }
+
+    window.initMap = initMap
+</script>

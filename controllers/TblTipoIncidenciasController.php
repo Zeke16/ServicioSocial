@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\TblTipoIncidencias;
 use app\models\TblTipoIncidenciasSearch;
+use Exception;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,17 +71,24 @@ class TblTipoIncidenciasController extends Controller
     {
         $model = new TblTipoIncidencias();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id_tipo_incidencia' => $model->id_tipo_incidencia]);
+        if ($model->load($this->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try{
+                if (!$model->save()) {
+                    throw new Exception(implode("<br />", \yii\helpers\ArrayHelper::getColumn($model->getErrors(), 0, false)));
+                }
+                $transaction->commit();
+            }catch(Exception $e){
+                $transaction->rollBack();
+                return $this->redirect(['index']);
             }
+            Yii::$app->session->setFlash('success', "Registro creado exitosamente.");
+            return $this->redirect(['view', 'id_tipo_incidencia' => $model->id_tipo_incidencia]);
         } else {
-            $model->loadDefaultValues();
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -94,6 +103,7 @@ class TblTipoIncidenciasController extends Controller
         $model = $this->findModel($id_tipo_incidencia);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('info', "Registro creado exitosamente.");
             return $this->redirect(['view', 'id_tipo_incidencia' => $model->id_tipo_incidencia]);
         }
 
@@ -111,6 +121,7 @@ class TblTipoIncidenciasController extends Controller
      */
     public function actionDelete($id_tipo_incidencia)
     {
+        Yii::$app->session->setFlash('danger', "Registro creado exitosamente.");
         $this->findModel($id_tipo_incidencia)->delete();
 
         return $this->redirect(['index']);

@@ -38,7 +38,7 @@ class TblTipoIncidencias extends \yii\db\ActiveRecord
     {
         return [
             'id_tipo_incidencia' => 'Id Tipo Incidencia',
-            'nombre_incidencia' => 'Nombre Incidencia',
+            'nombre_incidencia' => 'Tipo de incidencia',
         ];
     }
 }

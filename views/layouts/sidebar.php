@@ -22,6 +22,13 @@ use yii\helpers\Url;
     #tipo-incidencias {
         color: orangered;
     }
+    .bg-primary, .card-primary>.card-header{
+        background-color: #111e60!important;
+    }
+    .btn-primary{
+        background-color: #111e60!important;
+        border: #111e60!important;
+    }
     /*.nav-pills .nav-link.active{
     }*/
 </style>
@@ -86,7 +93,7 @@ use yii\helpers\Url;
                 if (Yii::$app->user->can('MasterAccess')) {
                 ?>
                     <li class="<?= $li; ?>"><a class="<?= $a; ?>" href="<?php echo Url::toRoute(['/tbl-comisiones/index']); ?>"><i class="nav-icon fas fa-ambulance" id="<?=$id?>"></i>
-                            <p>Comisiones</p>
+                            <p>Instituciones</p>
                         </a></li>
                 <?php } ?>
                 <!------- FIN COMISIONES ------->
@@ -122,8 +129,7 @@ use yii\helpers\Url;
                     $id = '';
                 }
 
-                if (Yii::$app->user->can('MasterAccess') || Yii::$app->user->can('UsuarioEstandarAccess')
-                || Yii::$app->user->can('UsuarioConsultorAccess') || Yii::$app->user->can('UsuarioSupervisorAccess')) {
+                if (Yii::$app->user->can('MasterAccess') || Yii::$app->user->can('UsuarioEstandarAccess') || Yii::$app->user->can('UsuarioSupervisorAccess')) {
                 ?>
                     <li class="<?= $li; ?>"><a class="<?= $a; ?>" href="<?php echo Url::toRoute(['/tbl-incidencias/index']); ?>"><i class="nav-icon fas fa-fire" id="<?=$id?>"></i>
                             <p>Incidencias</p>

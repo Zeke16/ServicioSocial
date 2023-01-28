@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\TblIncidencias;
+use Yii;
 
 /**
  * TblIncidenciasSearch represents the model behind the search form of `app\models\TblIncidencias`.
@@ -40,7 +41,14 @@ class TblIncidenciasSearch extends TblIncidencias
      */
     public function search($params)
     {
-        $query = TblIncidencias::find();
+        if (Yii::$app->user->can('MasterAccess')) {
+            $query = TblIncidencias::find();
+        } else if(Yii::$app->user->can('UsuarioEstandarAccess')){
+            $query = TblIncidencias::find()->where(['id_usuario' => Yii::$app->user->identity->id_usuario]);
+        }else if(Yii::$app->user->can('UsuarioConsultorAccess')){
+            $query = TblIncidencias::find()->where(['id_municipio' => Yii::$app->user->identity->id_municipio]);
+        }
+
 
         // add conditions that should always apply here
 

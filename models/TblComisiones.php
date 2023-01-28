@@ -40,7 +40,7 @@ class TblComisiones extends \yii\db\ActiveRecord
     {
         return [
             'id_comision' => 'Id Comision',
-            'nombre_comision' => 'Nombre Comision',
+            'nombre_comision' => 'Nombre de institución',
         ];
     }
 
