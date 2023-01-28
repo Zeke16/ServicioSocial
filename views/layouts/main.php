@@ -45,7 +45,7 @@ $assetDir = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/admi
 </div>
 
 <?php $this->endBody() ?>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxSSdUAqzrJMckIMZWasZwIz1cF32f3m8&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"></script>
 </body>
 </html>
 <?php $this->endPage() ?>
