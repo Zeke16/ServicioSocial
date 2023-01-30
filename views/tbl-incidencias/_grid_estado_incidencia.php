@@ -77,7 +77,7 @@ use yii\helpers\Html;
         }
 
         let options = {
-            zoom: 12,
+            zoom: 15,
             center: myLatLng
         }
         const map = new google.maps.Map(document.getElementById("map"), options);
