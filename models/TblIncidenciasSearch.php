@@ -45,7 +45,7 @@ class TblIncidenciasSearch extends TblIncidencias
             $query = TblIncidencias::find();
         } else if(Yii::$app->user->can('UsuarioEstandarAccess')){
             $query = TblIncidencias::find()->where(['id_usuario' => Yii::$app->user->identity->id_usuario]);
-        }else if(Yii::$app->user->can('UsuarioConsultorAccess')){
+        }else if(Yii::$app->user->can('UsuarioSupervisorAccess')){
             $query = TblIncidencias::find()->where(['id_municipio' => Yii::$app->user->identity->id_municipio]);
         }
 

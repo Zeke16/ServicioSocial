@@ -112,7 +112,7 @@ Yii::$app->language = 'es_ES';
                         ]) ?>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-12 mt-2">
-                        <?= $form->field($model, 'imagen')->label('Imagen')->widget(FileInput::class, [
+                        <?= $form->field($model, 'imagen')->label('Seleccione una foto suya')->widget(FileInput::class, [
                             'options' => ['accept' => 'image/*'],
                             'pluginOptions' => ['allowedFileExtensions' => ['jpg', 'gif', 'png'],],
                         ]); ?>
@@ -126,6 +126,9 @@ Yii::$app->language = 'es_ES';
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
                         <?= $form->field($model, 'telefono')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
                     </div>
+                    <?php
+                    if (Yii::$app->user->can('MasterAccess')) {
+                    ?>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
                         <?= $form->field($model, 'status')->widget(SwitchInput::class, [
                             'pluginOptions' => [
@@ -137,6 +140,9 @@ Yii::$app->language = 'es_ES';
                             ]
                         ]); ?>
                     </div>
+                    <?php
+                    }
+                    ?>
                     <div class="col-sm-12 col-md-12 col-xl-12 my-4 d-flex justify-content-between">
                         <?= Html::a('<i class="fa fa-ban"></i> Cancelar', ['index'], ['class' => 'btn btn-danger mt-2 w-25',]) ?>
                         <?= Html::submitButton('<i class="fa fa-user-plus"></i> Registrar', ['class' => 'btn btn-success mt-2 w-25', 'name' => 'signup-button']) ?>

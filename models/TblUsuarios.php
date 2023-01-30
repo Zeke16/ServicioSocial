@@ -91,7 +91,7 @@ class TblUsuarios extends \yii\db\ActiveRecord
             'auth_key' => 'Auth Key',
             'password_hash' => 'Contraseña',
             'password_reset_token' => 'Password Reset Token',
-            'imagen' => 'Imagen',
+            'imagen' => 'Seleccione una foto suya',
             'status' => 'Estado',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',

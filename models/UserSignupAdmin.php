@@ -75,7 +75,7 @@ class UserSignupAdmin extends Model
             'auth_key' => 'Auth Key',
             'password_hash' => 'Contraseña',
             'password_reset_token' => 'Password Reset Token',
-            'imagen' => 'Imagen',
+            'imagen' => 'Seleccione una foto suya',
             'status' => 'Estado',
         ];
     }

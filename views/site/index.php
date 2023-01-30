@@ -20,6 +20,9 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
     }
 </style>
 <div class="row">
+<?php
+    if (Yii::$app->user->can('UsuarioEstandarAccess') || Yii::$app->user->can('UsuarioSupervisorAccess') || Yii::$app->user->can('MasterAccess')) {
+    ?>
     <div class="col-lg-6 col-md-12 col-sm-12">
         <a href="index.php?r=tbl-incidencias/index">
             <div class="small-box bg-success text-white p-2">
@@ -34,6 +37,9 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
             </div>
         </a>
     </div>
+    <?php
+    }
+    ?>
 
 
     <?php

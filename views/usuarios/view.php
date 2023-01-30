@@ -2,9 +2,12 @@
 
 use yii\helpers\Html;
 
+
 $this->title = 'Detalle';
-$this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+if (Yii::$app->user->can('MasterAccess')) {
+    $this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['index']];
+    $this->params['breadcrumbs'][] = $this->title;
+}
 ?>
 <br>
 <div class="row">
@@ -72,11 +75,11 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="card-footer">
                 <?php
-                echo Html::a('<i class="fa fa-edit"></i> Editar', ['update', 'id_usuario' => $model->id_usuario], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'title' => 'Edit record'])?>
+                echo Html::a('<i class="fa fa-edit"></i> Editar', ['update', 'id_usuario' => $model->id_usuario], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'title' => 'Edit record']) ?>
                 <?php
                 if (Yii::$app->user->can('MasterAccess')) {
                     echo Html::a('<i class="fa fa-ban"></i> Cancelar', ['index'], ['class' => 'btn btn-danger', 'data-toggle' => 'tooltip', 'title' => 'Cancelar']);
-                }else{
+                } else {
                     echo Html::a('<i class="fa fa-ban"></i> Cancelar', ['site/index'], ['class' => 'btn btn-danger', 'data-toggle' => 'tooltip', 'title' => 'Cancelar']);
                 }
                 ?>

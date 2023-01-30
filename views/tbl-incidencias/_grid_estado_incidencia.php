@@ -44,7 +44,9 @@ use yii\helpers\Html;
                         echo Html::a('<i class="fa fa-check"></i> Resolver incidencia', ['tbl-estado-incidencia/update', 'id_estado_incidencia' => $model2->id_estado_incidencia], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'title' => 'Edit record']);
                     }
                 } else {
-                    echo Html::a('<i class="fa fa-check"></i> Resolver incidencia', ['tbl-estado-incidencia/update', 'id_estado_incidencia' => $model2->id_estado_incidencia], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'title' => 'Edit record']);
+                    if (Yii::$app->user->can('UsuarioSupervisorAccess') || Yii::$app->user->can('MasterAccess')) {
+                        echo Html::a('<i class="fa fa-check"></i> Resolver incidencia', ['tbl-estado-incidencia/update', 'id_estado_incidencia' => $model2->id_estado_incidencia], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'title' => 'Edit record']);
+                    }
                 }
                 ?>
             </div>
@@ -55,7 +57,7 @@ use yii\helpers\Html;
                     <h3 class="card-title mt-2">
                         Ubicación de la incidencia
                     </h3>
-                    <a target="_blank" href="https://maps.google.com/?q=<?= $ubicacion ?>" class="btn text-white border border-white">Ir a ubicación</a>
+                    <a target="_blank" href="https://maps.google.com/?q=<?= $ubicacion ?>" class="btn text-white border border-white"><i class="fa fa-paper-plane"></i>&nbsp;Ir a ubicación</a>
                 </div>
 
             </div>

@@ -68,7 +68,7 @@ use yii\helpers\Url;
                         ]); ?>
                     </div>
                     <div class="col-sm-12 col-md-12 col-xl-12 mt-2">
-                        <?= $form->field($model, 'imagen')->label('Imagen')->widget(FileInput::class, [
+                        <?= $form->field($model, 'imagen')->label('Seleccione una foto suya')->widget(FileInput::class, [
                             'options' => ['accept' => 'image/*'],
                             'pluginOptions' => ['allowedFileExtensions' => ['jpg', 'gif', 'png'],],
                         ]); ?>

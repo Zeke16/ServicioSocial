@@ -38,6 +38,7 @@ use yii\helpers\Html;
                 </table>
             </div>
             <div class="card-footer">
+            <a target="_blank" href="https://maps.google.com/?q=<?=$ubicacion?>" class="btn btn-success text-white border border-white"><i class="fa fa-paper-plane"></i>&nbsp;Ir a ubicación</a>
                 <?php
                 if ($model2->estado == 1) {
                     if (Yii::$app->user->can('MasterAccess')) {
@@ -45,7 +46,6 @@ use yii\helpers\Html;
                     }
                 } else {
                     echo Html::a('<i class="fa fa-check"></i> Resolver incidencia', ['tbl-estado-incidencia/update', 'id_estado_incidencia' => $model2->id_estado_incidencia], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'title' => 'Edit record']);
-                    echo '&nbsp;<a target="_blank" href="https://maps.google.com/?q=' . $ubicacion . '" class="btn btn-success text-white border border-white"><i class="fa fa-paper-plane"></i>&nbsp;Ir a ubicación</a>';
                 }
                 ?>
             </div>
