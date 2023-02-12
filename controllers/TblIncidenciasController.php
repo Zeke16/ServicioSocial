@@ -169,7 +169,7 @@ class TblIncidenciasController extends Controller
                 $transaction->rollBack();
                 return $this->redirect(['index']);
             }
-            Yii::$app->session->setFlash('success', "Registro creado exitosamente.");
+            Yii::$app->session->setFlash('info', "Registro creado exitosamente.");
             return $this->redirect(['view', 'id_incidencia' => $model->id_incidencia]);
         } else {
             return $this->render('create', [
@@ -196,7 +196,7 @@ class TblIncidenciasController extends Controller
             $transaction->rollBack();
             return $this->redirect(['index']);
         }
-        Yii::$app->session->setFlash('success', "Registro eliminado exitosamente.");
+        Yii::$app->session->setFlash('danger', "Registro eliminado exitosamente.");
         return $this->redirect(['index']);
     }
 

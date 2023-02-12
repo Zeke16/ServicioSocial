@@ -19,7 +19,7 @@ class TblIncidenciasSearch extends TblIncidencias
     {
         return [
             [['id_incidencia', 'id_usuario', 'id_municipio', 'id_tipo_incidencia'], 'integer'],
-            [['descripcion_incidencia', 'lugar_incidencia', 'fecha_registro', 'incidencia_otro'], 'safe'],
+            [['descripcion_incidencia', 'fecha_registro'], 'safe'],
         ];
     }
 
@@ -73,9 +73,7 @@ class TblIncidenciasSearch extends TblIncidencias
             'fecha_registro' => $this->fecha_registro,
         ]);
 
-        $query->andFilterWhere(['like', 'descripcion_incidencia', $this->descripcion_incidencia])
-            ->andFilterWhere(['like', 'lugar_incidencia', $this->lugar_incidencia])
-            ->andFilterWhere(['like', 'incidencia_otro', $this->incidencia_otro]);
+        $query->andFilterWhere(['like', 'descripcion_incidencia', $this->descripcion_incidencia]);
 
         return $dataProvider;
     }

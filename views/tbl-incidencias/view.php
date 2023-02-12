@@ -32,8 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         <td colspan="3"><?= $model->descripcion_incidencia ?></td>
                     </tr>
                     <tr>
-                        <td width="30%"><b>Lugar donde sucedio:</b></td>
-                        <td><?= $model->lugar_incidencia ?></td>
                         <td><b>Fecha del suceso:</b></td>
                         <td><?= $model->fecha_registro ?></td>
                     </tr>

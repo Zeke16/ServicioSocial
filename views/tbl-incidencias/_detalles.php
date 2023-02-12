@@ -9,11 +9,9 @@ use yii\helpers\Html;
             <div class="card-header">
                 <h3 class="card-title">
                     <?php
-                    if ($model->tipoIncidencia->nombre_incidencia == "Otro") {
-                        echo $model->incidencia_otro;
-                    } else {
-                        echo $model->tipoIncidencia->nombre_incidencia;
-                    }
+
+                    echo $model->tipoIncidencia->nombre_incidencia;
+
                     ?>
                 </h3>
             </div>
@@ -30,8 +28,6 @@ use yii\helpers\Html;
                         <td colspan="3"><?= $model->descripcion_incidencia ?></td>
                     </tr>
                     <tr>
-                        <td width="30%"><b>Lugar donde sucedio:</b></td>
-                        <td><?= $model->lugar_incidencia ?></td>
                         <td><b>Fecha del suceso:</b></td>
                         <td><?= $model->fecha_registro ?></td>
                     </tr>

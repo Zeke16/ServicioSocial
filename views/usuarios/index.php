@@ -51,6 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'nombres',
                     'vAlign' => 'middle',
                 ],
+                
                 [
                     'class' => 'kartik\grid\DataColumn',
                     'attribute' => 'apellidos',
@@ -72,6 +73,15 @@ $this->params['breadcrumbs'][] = $this->title;
                             'allowClear' => true
                         ],
                     ],
+                ],
+                [
+                    'class' => 'kartik\grid\DataColumn',
+                    'attribute' => 'id_departamento',
+                    'vAlign' => 'middle',
+                    'format' => 'html',
+                    'value' => function ($model, $key, $index, $widget) {
+                        return $model->tipoUsuario->nombre_tipo;
+                    },
                 ],
                 [
                     'class' => 'kartik\grid\DataColumn',

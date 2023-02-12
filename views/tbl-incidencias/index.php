@@ -93,34 +93,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'class' => 'kartik\grid\DataColumn',
-                    'attribute' => 'lugar_incidencia',
-                    'width' => '20%',
-                    'vAlign' => 'middle',
-                    'format' => 'raw',
-                    'value' => function ($model, $key, $index, $widget) {
-                        return $model->lugar_incidencia;
-                    },
-                    'filterType' => GridView::FILTER_SELECT2,
-                    'filter' => ArrayHelper::map(TblIncidencias::find()->orderBy('lugar_incidencia')->all(), 'id_incidencia', 'lugar_incidencia'),
-                    'filterWidgetOptions' => [
-                        'options' => ['placeholder' => 'Todos...'],
-                        'pluginOptions' => [
-                            'allowClear' => true
-                        ],
-                    ],
-                ],
-                [
-                    'class' => 'kartik\grid\DataColumn',
                     'attribute' => 'id_tipo_incidencia',
                     'width' => '20%',
                     'vAlign' => 'middle',
                     'format' => 'raw',
                     'value' => function ($model, $key, $index, $widget) {
-                        if ($model->tipoIncidencia->nombre_incidencia == "Otro") {
-                            return $model->incidencia_otro;
-                        } else {
-                            return $model->tipoIncidencia->nombre_incidencia;
-                        }
+                        return $model->tipoIncidencia->nombre_incidencia;
                     },
                     'filterType' => GridView::FILTER_SELECT2,
                     'filter' => ArrayHelper::map(TblTipoIncidencias::find()->orderBy('nombre_incidencia')->all(), 'id_tipo_incidencia', 'nombre_incidencia'),

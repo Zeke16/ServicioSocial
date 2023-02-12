@@ -49,6 +49,22 @@ use yii\helpers\Html;
                                 ]) ?>
                             </div>
                         <?php } ?>
+                        <div class="col-md-12">
+                            <?= Html::activeLabel($model, 'ubicacion_incidencia', ['class' => 'control-label']) ?>
+                            <div id="map" style="width: 100%; height: 500px;"></div>
+                            <button id="ubicacion" class="btn btn-primary mt-2"><i class="fas fa-crosshairs" style="font-size: 20px;"></i>&nbsp; Obtener mi ubicación actual</button>
+                            <?= $form->field($model, 'ubicacion_incidencia', ['showLabels' => false])->textInput([
+                                'id' => 'ubicacion_incidencia',
+                                'hidden' => true
+                            ]) ?>
+                        </div>
+                        <div class="col-md-12">
+                            <?= Html::activeLabel($model, 'imagen_incidencia', ['class' => 'control-label']) ?>
+                            <?= $form->field($model, 'imagen_incidencia', ['showLabels' => false])->widget(FileInput::class, [
+                                'options' => ['accept' => 'image/*'],
+                                'pluginOptions' => ['allowedFileExtensions' => ['jpg', 'gif', 'png'],],
+                            ]); ?>
+                        </div>
                         <div class="col-md-6">
                             <?= Html::activeLabel($model, 'id_municipio', ['class' => 'control-label']) ?>
                             <?= $form->field($model, 'id_municipio', ['showLabels' => false])->widget(Select2::class, [
@@ -67,32 +83,9 @@ use yii\helpers\Html;
                                 'pluginOptions' => ['allowClear' => true]
                             ]) ?>
                         </div>
-                        <div class="col-md-6">
-                            <?= Html::activeLabel($model, 'incidencia_otro', ['class' => 'control-label']) ?>
-                            <?= $form->field($model, 'incidencia_otro', ['showLabels' => false])->textInput(['autofocus' => true])->label('AAAA') ?>
-                        </div>
                         <div class="col-md-12">
                             <?= Html::activeLabel($model, 'descripcion_incidencia', ['class' => 'control-label']) ?>
                             <?= $form->field($model, 'descripcion_incidencia', ['showLabels' => false])->textarea([]) ?>
-                        </div>
-                        <div class="col-md-12">
-                            <?= Html::activeLabel($model, 'lugar_incidencia', ['class' => 'control-label']) ?>
-                            <?= $form->field($model, 'lugar_incidencia', ['showLabels' => false])->textarea([]) ?>
-                        </div>
-                        <div class="col-md-12">
-                            <?= Html::activeLabel($model, 'imagen_incidencia', ['class' => 'control-label']) ?>
-                            <?= $form->field($model, 'imagen_incidencia', ['showLabels' => false])->widget(FileInput::class, [
-                                'options' => ['accept' => 'image/*'],
-                                'pluginOptions' => ['allowedFileExtensions' => ['jpg', 'gif', 'png'],],
-                            ]); ?>
-                        </div>
-                        <div class="col-md-12">
-                            <?= Html::activeLabel($model, 'ubicacion_incidencia', ['class' => 'control-label']) ?>
-                            <div id="map" style="width: 100%; height: 500px;"></div>
-                            <?= $form->field($model, 'ubicacion_incidencia', ['showLabels' => false])->textInput([
-                                'id' => 'ubicacion_incidencia',
-                                'hidden' => true
-                            ]) ?>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -108,6 +101,8 @@ use yii\helpers\Html;
 <script>
     let markers = [];
     let count = 0;
+    let miUbicacion = document.getElementById('ubicacion')
+
 
     function initMap() {
         let options = {
@@ -123,6 +118,27 @@ use yii\helpers\Html;
             placeMarkerAndPanTo(e.latLng, map);
         });
 
+        miUbicacion.addEventListener("click", (e) => {
+            deleteMarkers()
+            e.preventDefault()
+            if (navigator.geolocation) { //check if geolocation is available
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    console.log(position.coords)
+                    let latLng = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    const marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                    });
+                    map.panTo(latLng);
+                    document.getElementById('ubicacion_incidencia').value = position.coords.latitude + ", " + position.coords.longitude
+
+                    markers.push(marker);
+                });
+            }
+        })
 
         function setMapOnAll(map) {
             for (let i = 0; i < markers.length; i++) {
