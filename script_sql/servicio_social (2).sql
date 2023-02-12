@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-01-2023 a las 02:25:31
+-- Tiempo de generación: 12-02-2023 a las 17:57:54
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 7.4.30
 
@@ -42,6 +42,7 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('UsuarioConsultorRol', '22', 1674767206),
 ('UsuarioEstandarRol', '16', 1674765330),
 ('UsuarioEstandarRol', '21', 1674766903),
+('UsuarioEstandarRol', '24', 1675043643),
 ('UsuarioEstandarRol', '3', 1672955153),
 ('UsuarioSupervisorRol', '2', 1646099817),
 ('UsuarioSupervisorRol', '23', 1674767286);
@@ -277,9 +278,7 @@ CREATE TABLE `tbl_estado_incidencia` (
 --
 
 INSERT INTO `tbl_estado_incidencia` (`id_estado_incidencia`, `id_incidencia`, `estado`, `retroalimentacion`) VALUES
-(1, 1, 0, 'Incidencia en proceso de resolución'),
-(2, 2, 1, 'Incidencia en proceso de resolución'),
-(3, 3, 0, 'Incidencia en proceso de resolución');
+(7, 7, 0, 'Incidencia en proceso de resolución');
 
 -- --------------------------------------------------------
 
@@ -293,21 +292,17 @@ CREATE TABLE `tbl_incidencias` (
   `id_municipio` int(11) NOT NULL,
   `id_tipo_incidencia` int(11) NOT NULL,
   `descripcion_incidencia` text NOT NULL,
-  `lugar_incidencia` text NOT NULL,
   `ubicacion_incidencia` text NOT NULL,
   `imagen_incidencia` text NOT NULL,
-  `fecha_registro` datetime NOT NULL,
-  `incidencia_otro` text NOT NULL
+  `fecha_registro` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tbl_incidencias`
 --
 
-INSERT INTO `tbl_incidencias` (`id_incidencia`, `id_usuario`, `id_municipio`, `id_tipo_incidencia`, `descripcion_incidencia`, `lugar_incidencia`, `ubicacion_incidencia`, `imagen_incidencia`, `fecha_registro`, `incidencia_otro`) VALUES
-(1, 2, 4, 4, 'asdas', 'asdasd', '13.501920949477997, -88.18058544459687', '/ServicioSocial/web/avatars/z6HUgoAjlqcgAo7niL7OI9DRU0vHk59o.jpg', '2023-01-26 11:57:04', 'Sucedio algo'),
-(2, 3, 5, 2, 'asdasdas', 'asdasdasd', '13.483809712512349, -88.18430222598934', '/ServicioSocial/web/avatars/YywQZkHyuA-rw7Eh6vuNoGFZna53Okm-.jpg', '2023-01-26 12:24:50', 'Sucedio algo'),
-(3, 1, 245, 2, 'afasfasfaf', 'fasfasfasfaf', '13.504591606784654, -88.16891247096406', '/ServicioSocial/web/avatars/2PL445-zeLs2U3LA1TVnvJ7VydncSxCW.png', '2023-01-26 15:16:19', '23423');
+INSERT INTO `tbl_incidencias` (`id_incidencia`, `id_usuario`, `id_municipio`, `id_tipo_incidencia`, `descripcion_incidencia`, `ubicacion_incidencia`, `imagen_incidencia`, `fecha_registro`) VALUES
+(7, 2, 3, 2, 'a', '13.5024217, -88.1779086', '/servicioSocial/web/avatars/sLmTANsriPowDZEkaozmjXErWDFplRpq.jpg', '2023-02-12 10:56:57');
 
 -- --------------------------------------------------------
 
@@ -711,7 +706,8 @@ INSERT INTO `tbl_usuarios` (`id_usuario`, `username`, `nombres`, `apellidos`, `d
 (20, 'pruebaasdfsdfsd', 'prueba', 'asdfsdfsd', '2356547658', 4, 154, 'Colonia x', 'corre2oo3534324@gmail.com', '34535345345', 1, 8, 'c7G68BBdSpmlLm249lx5lFaf_5Eu0OY0', '$2y$13$HgpdmNNH.q0BE5ULAh1S5uJN5h9otGUyIwwStWkCWcADmaAAaUrZ.', NULL, '/ServicioSocial/web/avatars/default.png', 1, 1674765970, 1674765970, NULL),
 (21, 'ezequiel ramirez 2de usuario', 'ezequiel ramirez 2', 'de usuario', '3423465475', 3, 28, 'Colonia x', 'correo3242343243256o@gmail.com', '34535345345', 1, 8, '43XGPUOlMH7Un06-SKnYkdjn3AFqvBDb', '$2y$13$Hkpi4vzKpl.0cT1P7T.wVOJZRMBjvR6PHkJYrBmn/pO6z7d7wnPyi', NULL, '/ServicioSocial/web/avatars/default.png', 1, 1674766903, 1674766903, NULL),
 (22, 'ezffadgsdgafasfas', 'ezffadgsdg', 'afasfas', '3453242464', 1, 1, 'casda', '123456@gmail.com', '34234242', 2, 1, 'Zaa0ArrSGDF2bAXKFGKeGDHxMHb2_cSG', '$2y$13$hP.UbZCDH4Je8VPo4LrsWuwAXJc6Ofx2QsVmwcE4miKSrizIsolUG', NULL, '/ServicioSocial/web/avatars/default.png', 1, 1674767206, 1674794942, NULL),
-(23, 'ezffadgsdgegerafasfas', 'ezffadgsdgeger', 'afasfas', '3453262532', 4, 153, 'casda', '1234567@gmail.com', '34234242', 3, 4, 'ieo03tiu8Ilij30zKH3luD-5R95gZrBL', '$2y$13$D7MjqyWY4myd4QqvQqdaTeJS3Sz7w75MAPdqaBgijySY9xGIhJo32', NULL, '/ServicioSocial/web/avatars/default.png', 1, 1674767286, 1674767286, NULL);
+(23, 'ezffadgsdgegerafasfas', 'ezffadgsdgeger', 'afasfas', '3453262532', 4, 153, 'casda', '1234567@gmail.com', '34234242', 3, 4, 'ieo03tiu8Ilij30zKH3luD-5R95gZrBL', '$2y$13$D7MjqyWY4myd4QqvQqdaTeJS3Sz7w75MAPdqaBgijySY9xGIhJo32', NULL, '/ServicioSocial/web/avatars/default.png', 1, 1674767286, 1674767286, NULL),
+(24, 'ezequiel ramirez 2de usuario', 'ezequiel ramirez 2', 'de usuario', '4356346534', 4, 156, 'sd', 'corr3453453eoo@gmail.com', 'fdgfdgdfgfdg', 1, 8, 'SJtvlKLy5tmup4skKFxr0MjBrjHxD-pW', '$2y$13$9mzIbb8TgzAOEV7O2QbLZuEfwgMrxNZM3Yb3sfLEYeQuistqw.wvS', NULL, '/ServicioSocial/web/avatars/daWhYCwta7QZz4_EeQzbAovwTTPAaawV.png', 1, 1675043643, 1675043643, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -849,13 +845,13 @@ ALTER TABLE `tbl_departamentos`
 -- AUTO_INCREMENT de la tabla `tbl_estado_incidencia`
 --
 ALTER TABLE `tbl_estado_incidencia`
-  MODIFY `id_estado_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_estado_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_incidencias`
 --
 ALTER TABLE `tbl_incidencias`
-  MODIFY `id_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_incidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `tbl_municipios`
@@ -885,7 +881,7 @@ ALTER TABLE `tbl_tipo_usuarios`
 -- AUTO_INCREMENT de la tabla `tbl_usuarios`
 --
 ALTER TABLE `tbl_usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Restricciones para tablas volcadas
