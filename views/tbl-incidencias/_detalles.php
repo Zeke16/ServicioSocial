@@ -19,7 +19,17 @@ use yii\helpers\Html;
                 <table class="table table-sm table-striped table-hover table-bordered">
                     <tr>
                         <td width="30%"><b>Reportado por:</b></td>
-                        <td> <?= Html::a($model->usuario->nombreCompleto,  ['usuarios/view', 'id_usuario' => $model->id_usuario]); ?></td>
+                        <?php
+                        if (Yii::$app->user->can('MasterAccess')) {
+                        ?>
+                            <td> <?= Html::a($model->usuario->nombreCompleto,  ['usuarios/view', 'id_usuario' => $model->id_usuario]); ?></td>
+                        <?php
+                        } else {
+                        ?>
+                            <td> <?= $model->usuario->nombreCompleto ?></td>
+                        <?php
+                        }
+                        ?>
                         <td><b>Municipio donde sucedio:</b></td>
                         <td><?= $model->municipio->nombre ?></td>
                     </tr>
@@ -32,10 +42,6 @@ use yii\helpers\Html;
                         <td><?= $model->fecha_registro ?></td>
                     </tr>
                 </table>
-            </div>
-            <div class="card-footer">
-                <?php echo Html::a('<i class="fa fa-edit"></i> Editar', ['update', 'id_incidencia' => $model->id_incidencia], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'title' => 'Edit record']) ?>
-                <?php echo Html::a('<i class="fa fa-ban"></i> Cancelar', ['index'], ['class' => 'btn btn-danger', 'data-toggle' => 'tooltip', 'title' => 'Cancelar']) ?>
             </div>
         </div>
     </div>

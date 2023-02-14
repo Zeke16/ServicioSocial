@@ -3,9 +3,12 @@
 use yii\helpers\Html;
 
 
-$this->title = 'Detalle';
+$this->title = 'Detalle de usuario';
 if (Yii::$app->user->can('MasterAccess')) {
     $this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['index']];
+    $this->params['breadcrumbs'][] = $this->title;
+}else{
+    $this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['tbl-incidencias/index']];
     $this->params['breadcrumbs'][] = $this->title;
 }
 ?>
@@ -43,7 +46,11 @@ if (Yii::$app->user->can('MasterAccess')) {
                     </tr>
                     <tr>
                         <td><b>Departamento:</b></td>
-                        <td><?= $model->departamento->nombre ?></td>
+                        <?php
+                        $nombre = substr(mb_strtolower($model->departamento->nombre, 'UTF-8'), 1);
+                        $inicial = $model->departamento->nombre[0];
+                        ?>
+                        <td><?= $inicial . $nombre ?></td>
                         <td><b>Municipio:</b></td>
                         <td><?= $model->municipio->nombre ?></td>
                     </tr>

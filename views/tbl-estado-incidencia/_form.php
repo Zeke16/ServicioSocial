@@ -25,7 +25,7 @@ use yii\helpers\Html;
         <div class="card card-primary">
 
             <div class="card-header">
-                <h3 class="card-title">Crear / Editar registro</h3>
+                <h3 class="card-title">Finalizar incidencia</h3>
             </div>
 
             <?php $form = ActiveForm::begin(
@@ -57,7 +57,7 @@ use yii\helpers\Html;
                         </div>
                     </div>
                     <div class="card-footer">
-                        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-save"></i> Guardar' : '<i class="fa fa-save"></i> Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+                        <?= Html::submitButton($model->isNewRecord ? '<i class="fa fa-save"></i> Guardar' : '<i class="fa fa-save"></i> Finalizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
                         <button class="btn btn-danger" onclick="history.back()"><i class="fa fa-ban"></i>&nbsp; Cancelar</button>
                     </div>
                 </form>

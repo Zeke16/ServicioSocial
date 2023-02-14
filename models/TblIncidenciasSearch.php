@@ -43,10 +43,23 @@ class TblIncidenciasSearch extends TblIncidencias
     {
         if (Yii::$app->user->can('MasterAccess')) {
             $query = TblIncidencias::find();
-        } else if(Yii::$app->user->can('UsuarioEstandarAccess')){
+        } else if (Yii::$app->user->can('UsuarioEstandarAccess')) {
             $query = TblIncidencias::find()->where(['id_usuario' => Yii::$app->user->identity->id_usuario]);
-        }else if(Yii::$app->user->can('UsuarioSupervisorAccess')){
-            $query = TblIncidencias::find()->where(['id_municipio' => Yii::$app->user->identity->id_municipio]);
+        } else if (Yii::$app->user->can('UsuarioSupervisorAccess')) {
+            $query = TblIncidencias::find()
+                ->innerJoin('tbl_municipios', 'tbl_municipios.id_municipio = tbl_incidencias.id_municipio')
+                ->innerJoin('tbl_departamentos', 'tbl_departamentos.id_departamento = tbl_municipios.id_departamento')
+                ->andWhere(['tbl_departamentos.id_departamento' => Yii::$app->user->identity->id_departamento]);
+            /**Este query creado con yii2 es equivalente al siguiente query crudo:
+             * 
+             * SELECT *
+             * FROM tbl_incidencias i
+             * INNER JOIN tbl_municipios m
+             * ON i.id_municipio = m.id_municipio
+             * INNER JOIN tbl_departamentos d
+             * ON d.id_departamento = m.id_departamento
+             * where d.id_departamento =  Yii::$app->user->identity->id_departamento
+             */
         }
 
 
@@ -54,6 +67,9 @@ class TblIncidenciasSearch extends TblIncidencias
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 20,
+            ]
         ]);
 
         $this->load($params);

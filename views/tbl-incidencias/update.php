@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->title = 'Actualizar registro';
 $this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => 'Detalle', 'url' => ['view', 'id_incidencia' => $model->id_incidencia]];
+$this->params['breadcrumbs'][] = ['label' => 'Detalle de incidencia', 'url' => ['view', 'id_incidencia' => $model->id_incidencia]];
 $this->params['breadcrumbs'][] = 'Actualizar';
 ?>
 <div class="tbl-usuarios-update">

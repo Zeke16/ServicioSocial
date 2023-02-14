@@ -29,16 +29,16 @@ use yii\helpers\Url;
             <form role="form">
                 <div class="row border">
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
-                        <?= $form->field($model, 'nombres')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
+                        <?= $form->field($model, 'nombres')->textInput(['maxlength' => true, 'autofocus' => true, 'placeholder' => "Escriba sus nombres acá"]) ?>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
-                        <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
+                        <?= $form->field($model, 'apellidos')->textInput(['maxlength' => true, 'autofocus' => true, 'placeholder' => "Escriba sus apellidos acá"]) ?>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
-                        <?= $form->field($model, 'dni')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
+                        <?= $form->field($model, 'dni')->textInput(['maxlength' => true, 'autofocus' => true, 'placeholder' => "Ejemplo: 01234567-9"]) ?>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
-                        <?= $form->field($model, 'lugar_residencia')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
+                        <?= $form->field($model, 'lugar_residencia')->textInput(['maxlength' => true, 'autofocus' => true, 'placeholder' => "Escriba su lugar de residencia acá"]) ?>
                     </div>
                     <div class="col-md-6">
                         <?= Html::activeLabel($model, 'id_departamento', ['class' => 'control-label']) ?>
@@ -74,20 +74,20 @@ use yii\helpers\Url;
                         ]); ?>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
-                        <?= $form->field($model, 'email')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
+                        <?= $form->field($model, 'email')->textInput(['maxlength' => true, 'autofocus' => true, 'placeholder' => "Escriba su correo electrónico acá"]) ?>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
                         <?= $form->field($model, 'password')->widget(PasswordInput::class, []); ?>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
-                        <?= $form->field($model, 'telefono')->textInput(['maxlength' => true, 'autofocus' => true]) ?>
+                        <?= $form->field($model, 'telefono')->textInput(['maxlength' => true, 'autofocus' => true, 'placeholder' => "Escriba su teléfono acá"]) ?>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-6 mt-2">
                         <?= $form->field($model, 'reCaptcha')->widget(
                             ReCaptcha2::class,
                             [
                                 'siteKey' => '6LcoCxQkAAAAABs_L10DnB4t3mU8hkC8oqiYwZ-X',
-                                'options' => [ 'enableAjaxValidation' => true],
+                                'options' => ['enableAjaxValidation' => true],
                             ]
                         ) ?>
                     </div>

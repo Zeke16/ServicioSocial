@@ -19,7 +19,7 @@ Yii::$app->language = 'es_ES';
 <div class="row">
     <div class="col-sm-12 col-md-12 col-xl-12">
         <h1 class="text-center text-white border rounded" style="background-color: #111e60;">
-            <b>Crear usuario</b>
+            <b>Actualizar usuario</b>
         </h1>
         <div class="card card-primary card-outline" style="padding:15px;">
             <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
@@ -144,8 +144,8 @@ Yii::$app->language = 'es_ES';
                     }
                     ?>
                     <div class="col-sm-12 col-md-12 col-xl-12 my-4 d-flex justify-content-between">
-                        <?= Html::a('<i class="fa fa-ban"></i> Cancelar', ['index'], ['class' => 'btn btn-danger mt-2 w-25',]) ?>
-                        <?= Html::submitButton('<i class="fa fa-user-plus"></i> Registrar', ['class' => 'btn btn-success mt-2 w-25', 'name' => 'signup-button']) ?>
+                        <?= Html::a('<i class="fa fa-ban"></i> Cancelar', ['view', 'id_usuario' => $model->id_usuario], ['class' => 'btn btn-danger mt-2 w-25',]) ?>
+                        <?= Html::submitButton('<i class="fa fa-user-edit"></i> Actualizar', ['class' => 'btn btn-success mt-2 w-25', 'name' => 'signup-button']) ?>
                     </div>
                 </div>
             </form>

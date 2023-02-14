@@ -72,7 +72,7 @@ class UserSignup extends Model
             'lugar_residencia' => 'Lugar de residencia',
             'email' => 'Correo electrónico',
             'password' => 'Contraseña',
-            'telefono' => 'Telefono',
+            'telefono' => 'Teléfono',
             'id_tipo_usuario' => 'Tipo de usuario',
             'id_comision' => 'Institución',
             'auth_key' => 'Auth Key',

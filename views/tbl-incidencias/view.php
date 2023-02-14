@@ -1,7 +1,9 @@
 <?php
+
 use yii\helpers\Html;
-$this->title = 'Detalle';
-$this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['index']];
+
+$this->title = 'Detalle de incidencia';
+$this->params['breadcrumbs'][] = ['label' => 'Listado de incidencias', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <br>
@@ -11,11 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="card-header">
                 <h3 class="card-title">
                     <?php
-                    if ($model->tipoIncidencia->nombre_incidencia == "Otro") {
-                        echo $model->incidencia_otro;
-                    } else {
-                        echo $model->tipoIncidencia->nombre_incidencia;
-                    }
+                    echo $model->tipoIncidencia->nombre_incidencia;
                     ?>
                 </h3>
             </div>
@@ -23,8 +21,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 <table class="table table-sm table-striped table-hover table-bordered">
                     <tr>
                         <td width="30%"><b>Reportado por:</b></td>
-                        <td> <?= Html::a($model->usuario->nombreCompleto,  ['usuarios/view', 'id_usuario' => $model->id_usuario]); ?></td>
-                        <td><b>Municipio donde sucedio:</b></td>
+                        <?php
+                        if (Yii::$app->user->can('MasterAccess')) {
+                        ?>
+                            <td> <?= Html::a($model->usuario->nombreCompleto,  ['usuarios/view', 'id_usuario' => $model->id_usuario]); ?></td>
+                        <?php
+                        } else {
+                        ?>
+                            <td> <?= $model->usuario->nombreCompleto ?></td>
+                        <?php
+                        }
+                        ?><td><b>Municipio donde sucedio:</b></td>
                         <td><?= $model->municipio->nombre ?></td>
                     </tr>
                     <tr>
@@ -38,8 +45,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 </table>
             </div>
             <div class="card-footer">
-                <?php echo Html::a('<i class="fa fa-edit"></i> Editar', ['update', 'id_incidencia' => $model->id_incidencia], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'title' => 'Edit record']) ?>
-                <?php echo Html::a('<i class="fa fa-ban"></i> Cancelar', ['index'], ['class' => 'btn btn-danger', 'data-toggle' => 'tooltip', 'title' => 'Cancelar']) ?>
+                <?php
+                if (Yii::$app->user->can('MasterAccess')) {
+                ?>
+                    <?php echo Html::a('<i class="fa fa-edit"></i> Editar', ['update', 'id_incidencia' => $model->id_incidencia], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'title' => 'Edit record']) ?>
+                    <?php echo Html::a('<i class="fa fa-ban"></i> Cancelar', ['index'], ['class' => 'btn btn-danger', 'data-toggle' => 'tooltip', 'title' => 'Cancelar']) ?>
+                <?php
+                } ?>
             </div>
         </div>
     </div>

@@ -8,7 +8,7 @@ use hail812\adminlte\widgets\Widget;
 use kartik\widgets\Select2;
 use yii\helpers\ArrayHelper;
 
-$this->title = 'Starter Page';
+$this->title = 'Página de inicio';
 $this->params['breadcrumbs'] = [['label' => $this->title]];
 ?>
 <style>

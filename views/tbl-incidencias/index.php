@@ -65,7 +65,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $model->municipio->nombre;
                     },
                     'filterType' => GridView::FILTER_SELECT2,
-                    'filter' => ArrayHelper::map(TblMunicipios::find()->orderBy('nombre')->all(), 'id_municipio', 'nombre'),
+                    'filter' => 
+                    Yii::$app->user->can('MasterAccess') 
+                    ? ArrayHelper::map(TblMunicipios::find()->orderBy('nombre')->all(), 'id_municipio', 'nombre') 
+                    : ArrayHelper::map(TblMunicipios::find()->andWhere(['id_departamento' => Yii::$app->user->identity->id_departamento])->orderBy('nombre')->all(), 'id_municipio', 'nombre'),
                     'filterWidgetOptions' => [
                         'options' => ['placeholder' => 'Todos...'],
                         'pluginOptions' => [
@@ -129,10 +132,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'class' => 'kartik\grid\ActionColumn',
-                    'width' => '20%',
+                    'template' =>
+                    Yii::$app->user->can('MasterAccess') ? '{view} {update} {delete}' : '{view}',
                     'urlCreator' => function ($action, TblIncidencias $model, $key, $index, $column) {
                         return Url::toRoute([$action, 'id_incidencia' => $model->id_incidencia]);
-                    }
+                    },
+                    'buttons' => [
+                        'delete' => function ($url, $model) {
+                            return Html::a('<span class="fas fa-trash-alt"></span>', ['delete', 'id_incidencia' => $model->id_incidencia], [
+                                'class' => '',
+                                'data' => [
+                                    'confirm' => 'Se eliminaran todos los datos relacionados con este registro. Desea continuar?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                        }
+                    ],
                 ],
             ];
 
@@ -155,7 +170,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'containerOptions' => ['style' => 'overflow: auto'], // only set when $responsive = false
                 'headerRowOptions' => ['class' => 'kartik-sheet-style'],
                 'filterRowOptions' => ['class' => 'kartik-sheet-style'],
-                'pjax' => true, // pjax is set to always true for this demo
+                'pjax' => false, // pjax is set to always true for this demo
                 // set your toolbar
                 'toolbar' =>  [
                     $exportmenu,
@@ -176,6 +191,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 ],
                 'toggleDataContainer' => ['class' => 'btn-group mr-2'],
+                'toggleDataOptions' => ['minCount' => 5],
                 // set export properties
                 // parameters from the demo form
                 'bordered' => true,

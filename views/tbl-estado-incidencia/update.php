@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\TblUsuarios */
 
-$this->title = 'Actualizar registro';
-$this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['index']];
+$this->title = 'Finalizar incidencia';
+$this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['tbl-incidencias/index']];
 $this->params['breadcrumbs'][] = ['label' => 'Detalle', 'url' => ['tbl-incidencias/view', 'id_incidencia' => $model->id_incidencia]];
-$this->params['breadcrumbs'][] = 'Actualizar';
+$this->params['breadcrumbs'][] = 'Finalizar incidencia';
 ?>
 <div class="tbl-usuarios-update">
 

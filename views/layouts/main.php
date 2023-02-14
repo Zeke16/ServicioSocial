@@ -1,4 +1,5 @@
 <?php
+Yii::$app->language = 'es_ES';
 
 /* @var $this \yii\web\View */
 /* @var $content string */

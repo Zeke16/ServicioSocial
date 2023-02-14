@@ -6,9 +6,15 @@ use yii\helpers\Html;
 /* @var $model app\models\TblUsuarios */
 
 $this->title = 'Actualizar registro';
-$this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => 'Detalle', 'url' => ['view', 'id_usuario' => $model->id_usuario]];
-$this->params['breadcrumbs'][] = 'Actualizar';
+if (Yii::$app->user->can('MasterAccess')) {
+    $this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['index']];
+    $this->params['breadcrumbs'][] = ['label' => 'Detalle de usuario', 'url' => ['view', 'id_usuario' => $model->id_usuario]];
+    $this->params['breadcrumbs'][] = 'Actualizar';
+} else {
+    $this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['tbl-incidencias/index']];
+    $this->params['breadcrumbs'][] = ['label' => 'Detalle de usuario', 'url' => ['view', 'id_usuario' => $model->id_usuario]];
+    $this->params['breadcrumbs'][] = 'Actualizar';
+}
 ?>
 <div class="tbl-usuarios-update">
 
