@@ -44,7 +44,7 @@ use yii\helpers\Html;
                     if (Yii::$app->user->can('MasterAccess')) {
                         echo Html::a('<i class="fa fa-check"></i> Resolver incidencia', ['tbl-estado-incidencia/update', 'id_estado_incidencia' => $model2->id_estado_incidencia], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'title' => 'Edit record']);
                     }
-                } else {
+                } else if(Yii::$app->user->can('UsuarioSupervisorAccess') || Yii::$app->user->can('MasterAccess')){
                     echo Html::a('<i class="fa fa-check"></i> Resolver incidencia', ['tbl-estado-incidencia/update', 'id_estado_incidencia' => $model2->id_estado_incidencia], ['class' => 'btn btn-primary', 'data-toggle' => 'tooltip', 'title' => 'Edit record']);
                 }
                 ?>

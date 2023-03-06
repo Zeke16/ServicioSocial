@@ -53,7 +53,7 @@ class TblIncidencias extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_incidencia' => 'Id',
+            'id_incidencia' => 'Estado',
             'id_usuario' => 'Usuario que reportó',
             'id_municipio' => 'Municipio',
             'id_tipo_incidencia' => 'Tipo de incidencia',
@@ -61,6 +61,7 @@ class TblIncidencias extends \yii\db\ActiveRecord
             'ubicacion_incidencia' => 'Ubicacion',
             'imagen_incidencia' => 'Imagen de referencia',
             'fecha_registro' => 'Fecha de registro',
+            'estado' => 'Estado',
         ];
     }
     public static function getIncidencia($id_incidencia)

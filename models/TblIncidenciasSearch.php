@@ -12,14 +12,17 @@ use Yii;
  */
 class TblIncidenciasSearch extends TblIncidencias
 {
+
+    public $estado;
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id_incidencia', 'id_usuario', 'id_municipio', 'id_tipo_incidencia'], 'integer'],
-            [['descripcion_incidencia', 'fecha_registro'], 'safe'],
+            [['id_incidencia', 'id_usuario', 'id_municipio', 'id_tipo_incidencia', 'estado'], 'integer'],
+            [['descripcion_incidencia', 'fecha_registro', 'estado'], 'safe'],
         ];
     }
 
@@ -61,6 +64,7 @@ class TblIncidenciasSearch extends TblIncidencias
              * where d.id_departamento =  Yii::$app->user->identity->id_departamento
              */
         }
+        $query->joinWith('tblEstadoIncidencias');
 
 
         // add conditions that should always apply here
@@ -71,6 +75,12 @@ class TblIncidenciasSearch extends TblIncidencias
                 'pageSize' => 20,
             ]
         ]);
+
+        $dataProvider->sort->attributes['estado'] = [
+            'asc' => ['tbl_estado_incidencia.estado' => SORT_ASC],
+            'desc' => ['tbl_estado_incidencia.estado' => SORT_DESC],
+            'label' => 'Estado',
+        ];
 
         $this->load($params);
 
@@ -89,7 +99,8 @@ class TblIncidenciasSearch extends TblIncidencias
             'fecha_registro' => $this->fecha_registro,
         ]);
 
-        $query->andFilterWhere(['like', 'descripcion_incidencia', $this->descripcion_incidencia]);
+        $query->andFilterWhere(['like', 'descripcion_incidencia', $this->descripcion_incidencia])
+        ->andFilterWhere(['like', 'tbl_estado_incidencia.estado', $this->estado]);
 
         return $dataProvider;
     }

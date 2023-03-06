@@ -10,8 +10,11 @@ if (Yii::$app->user->can('MasterAccess')) {
     $this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['index']];
     $this->params['breadcrumbs'][] = ['label' => 'Detalle de usuario', 'url' => ['view', 'id_usuario' => $model->id_usuario]];
     $this->params['breadcrumbs'][] = 'Actualizar';
-} else {
+} else if( Yii::$app->user->can('UsuarioSupervisorAccess') || Yii::$app->user->can('UsuarioEstandarAccess')) {
     $this->params['breadcrumbs'][] = ['label' => 'Listado', 'url' => ['tbl-incidencias/index']];
+    $this->params['breadcrumbs'][] = ['label' => 'Detalle de usuario', 'url' => ['view', 'id_usuario' => $model->id_usuario]];
+    $this->params['breadcrumbs'][] = 'Actualizar';
+}else{
     $this->params['breadcrumbs'][] = ['label' => 'Detalle de usuario', 'url' => ['view', 'id_usuario' => $model->id_usuario]];
     $this->params['breadcrumbs'][] = 'Actualizar';
 }

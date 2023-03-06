@@ -65,10 +65,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $model->municipio->nombre;
                     },
                     'filterType' => GridView::FILTER_SELECT2,
-                    'filter' => 
-                    Yii::$app->user->can('MasterAccess') 
-                    ? ArrayHelper::map(TblMunicipios::find()->orderBy('nombre')->all(), 'id_municipio', 'nombre') 
-                    : ArrayHelper::map(TblMunicipios::find()->andWhere(['id_departamento' => Yii::$app->user->identity->id_departamento])->orderBy('nombre')->all(), 'id_municipio', 'nombre'),
+                    'filter' =>
+                    Yii::$app->user->can('MasterAccess')
+                        ? ArrayHelper::map(TblMunicipios::find()->orderBy('nombre')->all(), 'id_municipio', 'nombre')
+                        : ArrayHelper::map(TblMunicipios::find()->andWhere(['id_departamento' => Yii::$app->user->identity->id_departamento])->orderBy('nombre')->all(), 'id_municipio', 'nombre'),
                     'filterWidgetOptions' => [
                         'options' => ['placeholder' => 'Todos...'],
                         'pluginOptions' => [
@@ -129,6 +129,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             'allowClear' => true
                         ],
                     ],
+                ],
+                [
+
+                    'class' => 'kartik\grid\BooleanColumn',
+                    'width' => '20%',
+                    'falseIcon' => '<span class="fas  fa-exclamation-triangle text-warning"></span>',
+                    'attribute' => 'estado',
+                    'vAlign' => 'middle',
+                    'value' => function ($model, $key, $index, $widget) {
+                        $model2 = TblEstadoIncidencia::getEstadoIncidencia($model->id_incidencia);
+                        return $model2->estado;
+                    },
+                    
                 ],
                 [
                     'class' => 'kartik\grid\ActionColumn',
