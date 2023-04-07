@@ -160,7 +160,10 @@ $this->params['breadcrumbs'] = [['label' => $this->title]];
             echo Select2::widget([
                 'name' => 'dep',
                 'id' => 'departamento',
-                'data' => ArrayHelper::map(TblDepartamentos::find()->all(), 'id_departamento', 'nombre'),
+                'data' =>
+                Yii::$app->user->can('MasterAccess')
+                ? ArrayHelper::map(TblDepartamentos::find()->orderBy('nombre')->all(), 'id_departamento', 'nombre')
+                : ArrayHelper::map(TblDepartamentos::find()->andWhere(['id_departamento' => Yii::$app->user->identity->id_departamento])->orderBy('nombre')->all(), 'id_departamento', 'nombre'),
                 'language' => 'es',
                 'options' => ['placeholder' => 'Seleccionar departamento',],
                 'pluginOptions' => ['allowClear' => true],

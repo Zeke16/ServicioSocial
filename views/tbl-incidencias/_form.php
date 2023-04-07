@@ -26,7 +26,6 @@ use yii\helpers\Html;
             <div class="card-header">
                 <h3 class="card-title">Crear / Editar registro</h3>
             </div>
-
             <?php $form = ActiveForm::begin(
                 [
                     'type' => ActiveForm::TYPE_HORIZONTAL,
